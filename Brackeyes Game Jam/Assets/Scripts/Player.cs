@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private GameObject _shot;
+
     private Rigidbody2D _rb;
 
     [SerializeField] private Transform _groundCheck;
@@ -32,8 +34,12 @@ public class Player : MonoBehaviour
         HandleMovement();
 
         HandleJump();
-    }
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            Shoot();
+        }
+    }
 
     void HandleMovement()
     {
@@ -71,11 +77,22 @@ public class Player : MonoBehaviour
 
     bool IsGrounded()
     {
-        return Physics2D.OverlapCircle(_groundCheck.position, 0.25f, _groundLayer);
+        return Physics2D.OverlapCircle(_groundCheck.position, 0.2f, _groundLayer);
+    }
+
+    void Shoot()
+    {
+        var shotDir = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+
+        var shotAngle = Mathf.Atan2(shotDir.y, shotDir.x) * Mathf.Rad2Deg;
+
+        var shot = Instantiate(_shot, transform.position, Quaternion.Euler(0f, 0f, shotAngle));
+
+        shot.GetComponent<Shot>().dir = shotDir;
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(_groundCheck.position, 0.25f);
+        Gizmos.DrawWireSphere(_groundCheck.position, 0.2f);
     }
 }
