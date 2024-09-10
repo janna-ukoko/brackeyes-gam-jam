@@ -23,7 +23,7 @@ public class EnemySpawner : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(2f);
 
             var randomPoint = Random.Range(0, _spawnPoints.Length);
 

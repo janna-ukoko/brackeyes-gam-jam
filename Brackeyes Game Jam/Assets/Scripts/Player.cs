@@ -24,16 +24,21 @@ public class Player : MonoBehaviour
 
     float _coyoteTimeCounter;
 
+    float _moveX;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        HandleMovement();
+        _moveX = Input.GetAxis("Horizontal");
 
-        HandleJump();
+        if (Input.GetButtonDown("Jump"))
+        {
+            _jumpBufferCounter = _jumpBufferTime;
+        }
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -41,11 +46,16 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        HandleMovement();
+
+        HandleJump();
+    }
+
     void HandleMovement()
     {
-        var moveX = Input.GetAxis("Horizontal");
-
-        _rb.velocity = new Vector2(_speed * moveX, _rb.velocity.y);
+        _rb.velocity = new Vector2(_speed * _moveX, _rb.velocity.y);
     }
 
     void HandleJump()
@@ -58,11 +68,6 @@ public class Player : MonoBehaviour
         else
         {
             _coyoteTimeCounter -= Time.fixedDeltaTime;
-        }
-
-        if (Input.GetButtonDown("Jump")) 
-        {
-            _jumpBufferCounter = _jumpBufferTime;
         }
 
         _jumpBufferCounter -= Time.fixedDeltaTime;
