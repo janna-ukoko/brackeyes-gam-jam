@@ -43,3 +43,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 1848060215
+    locked: 0
+  - name: Church
+    uniqueID: 1025626587
+    locked: 0
+  - name: Player
+    uniqueID: 3498165557
+    locked: 0
+  - name: Foreground
+    uniqueID: 3425622809
+    locked: 0
