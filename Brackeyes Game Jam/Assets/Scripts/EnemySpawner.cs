@@ -40,7 +40,5 @@ public class EnemySpawner : MonoBehaviour
     void IncreaseDifficulty()
     {
         if (_spawnTimer > 0.5f) _spawnTimer -= _difficultyIncreaseRate;
-
-        Debug.Log("Spawn Timer: " + _spawnTimer);
     }
 }
