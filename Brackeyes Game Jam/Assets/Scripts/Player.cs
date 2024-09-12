@@ -6,6 +6,10 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private GameObject _shot;
 
+    [SerializeField] private Animator _animator;
+
+    [SerializeField] private Transform _characterRig;
+
     private Rigidbody2D _rb;
 
     [SerializeField] private Transform _groundCheck;
@@ -51,11 +55,17 @@ public class Player : MonoBehaviour
         HandleMovement();
 
         HandleJump();
+
+        HandleAnimations();
     }
 
     void HandleMovement()
     {
         _rb.velocity = new Vector2(_speed * _moveX, _rb.velocity.y);
+
+        if (_moveX > 0.1f) _characterRig.localScale = new Vector2(1f, _characterRig.localScale.y);
+
+        else if (_moveX < -0.1f) _characterRig.localScale = new Vector2(-1f, _characterRig.localScale.y);
     }
 
     void HandleJump()
@@ -94,6 +104,29 @@ public class Player : MonoBehaviour
         var shot = Instantiate(_shot, transform.position, Quaternion.Euler(0f, 0f, shotAngle));
 
         shot.GetComponent<Shot>().dir = shotDir;
+    }
+
+    void HandleAnimations()
+    {
+        if (IsGrounded() && _moveX < 0.1f && _moveX > -0.1f)
+        {
+            _animator.SetInteger("state", 0);
+        }
+
+        else if (IsGrounded() && (_moveX > 0.1f || _moveX < -0.1f))
+        {
+            _animator.SetInteger("state", 1);
+        }
+
+        else if (!IsGrounded() && _rb.velocity.y > 0f)
+        {
+
+        }
+
+        else if (!IsGrounded() && _rb.velocity.y < 0f)
+        {
+
+        }
     }
 
     private void OnDrawGizmos()
