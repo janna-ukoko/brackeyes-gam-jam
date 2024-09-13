@@ -6,9 +6,13 @@ public class Pillar : MonoBehaviour
 {
     [SerializeField] private Transform _player;
 
-    [SerializeField] private float _playerThreshold = 2f;
+    [SerializeField] private float _playerThreshold = 3f;
 
     private SpriteRenderer _spriteRenderer;
+
+    private float _alphaValue = 1f;
+
+    private float _fadeValue = 0.2f;
 
     private void Awake()
     {
@@ -17,18 +21,20 @@ public class Pillar : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Mathf.Abs(transform.position.x - _player.position.x) < _playerThreshold) FadeOut();
+        _spriteRenderer.color = new Vector4(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, _alphaValue);
 
-        else FadeIn();
+        if (Mathf.Abs(transform.position.x - _player.position.x) < _playerThreshold) FadeAlphaOut();
+
+        else FadeAlphaIn();
     }
 
-    void FadeOut()
+    void FadeAlphaOut()
     {
-        _spriteRenderer.color = new Vector4(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, 0f) ;
+        _alphaValue = Mathf.Lerp(_alphaValue, 0.4f, _fadeValue);
     }
 
-    void FadeIn()
+    void FadeAlphaIn()
     {
-        _spriteRenderer.color = new Vector4(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, 1f);
+        _alphaValue = Mathf.Lerp(_alphaValue, 1f, _fadeValue);
     }
 }
