@@ -17,7 +17,7 @@ public class Shot : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _rb.velocity = dir.normalized * _speed;
+        _rb.velocity = dir * _speed;
     }
 
     private void OnBecameInvisible()

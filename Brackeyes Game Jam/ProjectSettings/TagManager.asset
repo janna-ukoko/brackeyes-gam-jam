@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Shot
+  - PlayerTrigger
   layers:
   - Default
   - TransparentFX
@@ -54,6 +55,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3498165557
+    locked: 0
+  - name: Ground
+    uniqueID: 1105022031
     locked: 0
   - name: Foreground
     uniqueID: 3425622809

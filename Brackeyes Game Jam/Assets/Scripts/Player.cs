@@ -6,9 +6,17 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private GameObject _shot;
 
+    [SerializeField] private Transform _shotOrigin;
+
     [SerializeField] private Animator _animator;
 
     [SerializeField] private Transform _characterRig;
+
+    [SerializeField] private Transform _rightArm;
+
+    [SerializeField] private Transform _rightArmPivot;
+
+    [SerializeField] private Transform _rightForearmPivot;
 
     private Rigidbody2D _rb;
 
@@ -20,6 +28,8 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float _jumpPower = 10f;
 
+    private float _maxArmExtension = 2f;
+
     float _jumpBufferTime = 0.2f;
 
     float _jumpBufferCounter;
@@ -29,6 +39,8 @@ public class Player : MonoBehaviour
     float _coyoteTimeCounter;
 
     float _moveX;
+
+    float _bodyDir;
 
     private void Awake()
     {
@@ -43,6 +55,8 @@ public class Player : MonoBehaviour
         {
             _jumpBufferCounter = _jumpBufferTime;
         }
+
+        Aim();
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -62,10 +76,6 @@ public class Player : MonoBehaviour
     void HandleMovement()
     {
         _rb.velocity = new Vector2(_speed * _moveX, _rb.velocity.y);
-
-        if (_moveX > 0.1f) _characterRig.localScale = new Vector2(1f, _characterRig.localScale.y);
-
-        else if (_moveX < -0.1f) _characterRig.localScale = new Vector2(-1f, _characterRig.localScale.y);
     }
 
     void HandleJump()
@@ -95,13 +105,37 @@ public class Player : MonoBehaviour
         return Physics2D.OverlapCircle(_groundCheck.position, 0.2f, _groundLayer);
     }
 
+    Vector3 GetMousePosition()
+    {
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePos.z = 0f;
+
+        return mousePos;
+    }
+
+    void Aim()
+    {
+        _rightArm.position = GetMousePosition();
+
+        _bodyDir = Mathf.Sign(GetMousePosition().x - transform.position.x);
+
+        _characterRig.localScale = new Vector2(_bodyDir, _characterRig.localScale.y);
+
+        if (Vector3.Distance(_rightArm.position, _rightArmPivot.position) > _maxArmExtension)
+        {
+            Vector3 dir = (GetMousePosition() - _rightArmPivot.position).normalized;
+
+            _rightArm.position = _rightArmPivot.position + dir * _maxArmExtension;
+        }
+    }
+
     void Shoot()
     {
-        var shotDir = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        var shotDir = (GetMousePosition() - _rightForearmPivot.position).normalized;
 
         var shotAngle = Mathf.Atan2(shotDir.y, shotDir.x) * Mathf.Rad2Deg;
 
-        var shot = Instantiate(_shot, transform.position, Quaternion.Euler(0f, 0f, shotAngle));
+        var shot = Instantiate(_shot, _shotOrigin.position, Quaternion.Euler(0f, 0f, shotAngle));
 
         shot.GetComponent<Shot>().dir = shotDir;
     }
@@ -113,9 +147,14 @@ public class Player : MonoBehaviour
             _animator.SetInteger("state", 0);
         }
 
-        else if (IsGrounded() && (_moveX > 0.1f || _moveX < -0.1f))
+        else if (IsGrounded() && ((_moveX > 0.1f && _bodyDir == 1f) || (_moveX < -0.1f && _bodyDir == -1f)))
         {
             _animator.SetInteger("state", 1);
+        }
+
+        else if (IsGrounded() && ((_moveX > 0.1f && _bodyDir == -1f) || (_moveX < -0.1f && _bodyDir == 1f)))
+        {
+            _animator.SetInteger("state", 2);
         }
 
         else if (!IsGrounded() && _rb.velocity.y > 0f)
