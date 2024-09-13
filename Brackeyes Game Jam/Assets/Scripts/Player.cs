@@ -42,6 +42,8 @@ public class Player : MonoBehaviour
 
     float _bodyDir;
 
+    private int _currentState = 0;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -142,29 +144,41 @@ public class Player : MonoBehaviour
 
     void HandleAnimations()
     {
-        if (IsGrounded() && _moveX < 0.1f && _moveX > -0.1f)
+        _currentState = _animator.GetInteger("state");
+
+        if (_currentState != 5 && IsGrounded() && _moveX < 0.1f && _moveX > -0.1f)
         {
             _animator.SetInteger("state", 0);
         }
 
-        else if (IsGrounded() && ((_moveX > 0.1f && _bodyDir == 1f) || (_moveX < -0.1f && _bodyDir == -1f)))
+        else if (_currentState != 5 && IsGrounded() && ((_moveX > 0.1f && _bodyDir == 1f) || (_moveX < -0.1f && _bodyDir == -1f)))
         {
             _animator.SetInteger("state", 1);
         }
 
-        else if (IsGrounded() && ((_moveX > 0.1f && _bodyDir == -1f) || (_moveX < -0.1f && _bodyDir == 1f)))
+        else if (_currentState != 5 && IsGrounded() && ((_moveX > 0.1f && _bodyDir == -1f) || (_moveX < -0.1f && _bodyDir == 1f)))
         {
             _animator.SetInteger("state", 2);
         }
 
+        //Squat before jump
         else if (!IsGrounded() && _rb.velocity.y > 0f)
         {
-
+            _animator.SetInteger("state", 3);
         }
 
+        //Jump - Enters this state automatically
+
+        //Fall
         else if (!IsGrounded() && _rb.velocity.y < 0f)
         {
+            _animator.SetInteger("state", 5);
+        }
 
+        //Squat after fall
+        else if (_currentState == 5 && IsGrounded())
+        {
+            _animator.SetInteger("state", 6);
         }
     }
 
