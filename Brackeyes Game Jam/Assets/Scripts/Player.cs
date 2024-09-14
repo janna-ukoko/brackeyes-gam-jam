@@ -162,7 +162,7 @@ public class Player : MonoBehaviour
         }
 
         //Squat before jump
-        else if (!IsGrounded() && _rb.velocity.y > 0f)
+        else if (_currentState != 3 && !IsGrounded() && _rb.velocity.y > 0f)
         {
             _animator.SetInteger("state", 3);
         }
@@ -176,7 +176,7 @@ public class Player : MonoBehaviour
         }
 
         //Squat after fall
-        else if (_currentState == 5 && IsGrounded())
+        else if (_currentState != 3 && _currentState == 5 && IsGrounded())
         {
             _animator.SetInteger("state", 6);
         }
