@@ -16,7 +16,9 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Transform _rightArmPivot;
 
-    [SerializeField] private Transform _rightForearmPivot;
+    [SerializeField] private Transform _gunBase;
+
+    [SerializeField] private Transform _gunTop;
 
     private Rigidbody2D _rb;
 
@@ -44,9 +46,16 @@ public class Player : MonoBehaviour
 
     private int _currentState = 0;
 
+    private Vector3 _armOffset;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void Start()
+    {
+        _armOffset = _gunTop.position - _rightArm.position;
     }
 
     private void Update()
@@ -133,7 +142,17 @@ public class Player : MonoBehaviour
 
     void Shoot()
     {
-        var shotDir = (GetMousePosition() - _rightForearmPivot.position).normalized;
+        var shotDir = new Vector3();
+
+        if (Vector3.Distance(_rightArm.position, _rightArmPivot.position) > _maxArmExtension)
+        {
+            shotDir = (GetMousePosition() - _gunBase.position).normalized;
+        }
+
+        else
+        {
+            shotDir = (_gunTop.position - _gunBase.position).normalized;
+        }
 
         var shotAngle = Mathf.Atan2(shotDir.y, shotDir.x) * Mathf.Rad2Deg;
 

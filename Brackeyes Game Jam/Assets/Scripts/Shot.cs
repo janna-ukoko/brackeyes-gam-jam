@@ -10,6 +10,8 @@ public class Shot : MonoBehaviour
 
     [SerializeField] private float _speed = 10f;
 
+    private float _destroyTimer = 0.2f;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -27,6 +29,15 @@ public class Shot : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (gameObject != null) StartCoroutine(DestroyShot());
+    }
+
+    private IEnumerator DestroyShot()
+    {
+        _rb.velocity = new Vector2();
+
+        yield return new WaitForSeconds(_destroyTimer);
+
         Destroy(gameObject);
     }
 }
