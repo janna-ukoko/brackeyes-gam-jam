@@ -46,16 +46,13 @@ public class Player : MonoBehaviour
 
     private int _currentState = 0;
 
-    private Vector3 _armOffset;
+    [SerializeField] private Animator _muzzleFlash;
+
+    [SerializeField] private Animator _gunShot;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-    }
-
-    private void Start()
-    {
-        _armOffset = _gunTop.position - _rightArm.position;
     }
 
     private void Update()
@@ -72,6 +69,10 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Shoot();
+
+            _muzzleFlash.Play("shot");
+
+            _gunShot.Play("gunShoot");
         }
     }
 
