@@ -20,7 +20,7 @@ TagManager:
   - Enemy
   - Wall
   - Top Ground
-  - 
+  - Post-Processing
   - 
   - 
   - 
@@ -61,4 +61,7 @@ TagManager:
     locked: 0
   - name: Foreground
     uniqueID: 3425622809
+    locked: 0
+  - name: Crosshair
+    uniqueID: 868261669
     locked: 0
