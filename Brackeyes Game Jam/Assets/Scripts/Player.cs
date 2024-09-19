@@ -50,6 +50,8 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Animator _gunShot;
 
+    [SerializeField] private AudioSource _jumpAudio;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -109,6 +111,8 @@ public class Player : MonoBehaviour
             _rb.velocity = new Vector2(_rb.velocity.x, _jumpPower);
 
             _coyoteTimeCounter = 0f;
+
+            _jumpAudio.Play();
         }
     }
 
@@ -201,6 +205,8 @@ public class Player : MonoBehaviour
             _animator.SetInteger("state", 6);
         }
     }
+
+
 
     private void OnDrawGizmos()
     {
