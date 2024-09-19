@@ -8,6 +8,7 @@ public class Audio : MonoBehaviour
 
     [SerializeField] private AudioSource _landingAudio;
 
+    [SerializeField] private AudioSource _landingBreatheAudio;
     public void PlayFootStepAudio()
     {
         _footStepAudio.Play();
@@ -16,5 +17,7 @@ public class Audio : MonoBehaviour
     public void PlayLandingAudio()
     {
         _landingAudio.Play();
+
+        _landingBreatheAudio.Play();
     }
 }
