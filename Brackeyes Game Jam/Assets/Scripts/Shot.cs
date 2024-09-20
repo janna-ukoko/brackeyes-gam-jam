@@ -20,6 +20,8 @@ public class Shot : MonoBehaviour
 
     [SerializeField] private AudioSource _bulletHitAudio;
 
+    [SerializeField] private GameObject _shotDust;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -42,6 +44,8 @@ public class Shot : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         _bulletHitAudio.Play();
+
+        Instantiate(_shotDust, transform.position, transform.rotation);
 
         DestroyShot();
     }

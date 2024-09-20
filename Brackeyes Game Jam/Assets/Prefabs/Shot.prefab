@@ -243,7 +243,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!61 &209551043809349029
 BoxCollider2D:
@@ -305,6 +305,7 @@ MonoBehaviour:
   dir: {x: 0, y: 0}
   _speed: 100
   _bulletHitAudio: {fileID: 6077398275650578360}
+  _shotDust: {fileID: 4215329913580163952, guid: 1a646f80df8b6c0489bd4e2729a59a7e, type: 3}
 --- !u!96 &276371288149376210
 TrailRenderer:
   serializedVersion: 3
