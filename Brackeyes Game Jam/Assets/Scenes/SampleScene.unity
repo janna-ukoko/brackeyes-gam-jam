@@ -5113,9 +5113,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b40ecad9916f6ae4e8d55835fc0f0887, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 1526933756}
-  _idleNoise: {fileID: 11400000, guid: b6ed2e1cc497c3c4288ea0af368a19f4, type: 2}
-  _cameraShakeNoise: {fileID: 11400000, guid: 4bb5e230e982a2f43b27f6de7e869357, type: 2}
 --- !u!1 &1545561783
 GameObject:
   m_ObjectHideFlags: 0

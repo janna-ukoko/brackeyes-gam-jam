@@ -5,11 +5,7 @@ using UnityEngine;
 
 public class CameraShake : MonoBehaviour
 {
-    [SerializeField] private CinemachineVirtualCamera _camera;
-
-    [SerializeField] private NoiseSettings _idleNoise;
-    
-    [SerializeField] private NoiseSettings _cameraShakeNoise;
+    private CinemachineVirtualCamera _virtualCamera;
 
     private CinemachineBasicMultiChannelPerlin _noise;
 
@@ -17,12 +13,16 @@ public class CameraShake : MonoBehaviour
 
     private void Start()
     {
-        _noise = _camera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        _virtualCamera = GameObject.Find("Virtual Camera").GetComponent<CinemachineVirtualCamera>(); 
+
+        _noise = _virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
     public void Shake()
     {
-        _noise.m_NoiseProfile = _cameraShakeNoise;
+        _noise.m_AmplitudeGain = 1.5f;
+
+        _noise.m_FrequencyGain = 4.5f;
 
         StartCoroutine(ShakeCamera());
     }
@@ -31,6 +31,8 @@ public class CameraShake : MonoBehaviour
     {
         yield return new WaitForSeconds(_cameraShakeTime);
 
-        _noise.m_NoiseProfile = _idleNoise;
+        _noise.m_AmplitudeGain = 0.75f;
+
+        _noise.m_FrequencyGain = 0.15f;
     }
 }
